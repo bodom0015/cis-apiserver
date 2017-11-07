@@ -5,10 +5,6 @@ from typing import List, Dict
 from six import iteritems
 from ..util import deserialize_date, deserialize_datetime
 
-from cis_interface.config import cis_cfg, cfg_environment
-from cis_interface import runner
-from cis_interface.runner import CisRunner
-
 from .. import endpoints
 
 def add_sim_data(body):

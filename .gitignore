@@ -62,3 +62,6 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+# DO NOT commit real models to this repository
+Models_AMQP/
