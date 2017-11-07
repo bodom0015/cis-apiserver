@@ -21,13 +21,13 @@ python3 -m swagger_server
 and open your browser to here:
 
 ```
-http://localhost:8080/v2/ui/
+http://localhost:8080/api/v1/ui/
 ```
 
 Your Swagger definition lives here:
 
 ```
-http://localhost:8080/v2/swagger.json
+http://localhost:8080/api/v1/swagger.json
 ```
 
 To launch the integration tests, use tox:
@@ -38,12 +38,40 @@ tox
 
 ## Running with Docker
 
-To run the server on a Docker container, please execute the following from the root directory:
+To run a RabbitMQ development server in a Docker container:
+```bash
+docker run --name=rabbitmq -it -d -p 5672:5672 rabbitmq:3.6.2-management
+```
 
+To run the apiserver in a Docker container, please execute the following from the root directory:
 ```bash
 # building the image
-docker build -t swagger_server .
+docker build -t cis-apiserver .
 
-# starting up a container
-docker run -p 8080:8080 swagger_server
+# start up a container
+docker run -it -d --name=cis-api -p 8080:8080 --link rabbitmq \
+    -e RABBIT_HOST=rabbitmq -e RABBIT_NAMESPACE=apiserver cis-apiserver
+```
+
+### Regenerating with Docker
+
+To regenerate the controllers / models via Docker, please execute the following in the root directory:
+```bash
+docker run -it -v $(pwd):/workspace -w /workspace swaggerapi/swagger-codegen-cli generate -i ./swagger_server/swagger/swagger.yaml -l python-flask -o .
+```
+
+This will read the `.swagger-codegen-ignore` file to determine which files should
+be overwritten during regeneration. You should see output of which files are
+modified as the codegen process executes.
+
+## Testing
+
+You can test the `/simulations` endpoint by sending an HTTP POST to `localhost:8080/v2/simulations`:
+```bash
+curl -XPOST --header 'Content-Type: application/json' localhost:8080/v2/simulations -d '{"models":["example:hello_cpp"]}'
+```
+
+You should see the specified model output in the service logs:
+```
+
 ```

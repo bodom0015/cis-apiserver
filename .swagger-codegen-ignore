@@ -21,3 +21,30 @@
 #docs/*.md
 # Then explicitly reverse the ignore rule for a single file:
 #!docs/README.md
+
+
+
+### Everything BELOW this line was added AFTER the server was generated ###
+
+
+
+# Don't touch our README if it already exists
+README.md
+
+# Don't touch our requirements
+requirements.txt
+
+# Don't regenerate ignore files
+.gitignore
+.dockerignore
+.swagger-codegen-ignore
+
+# Skip our simulations controller (for now)
+swagger_server/controllers/simulations_controller.py
+
+# NEVER modify our Docker image
+Dockerfile
+entrypoint.sh
+
+# NEVER overwrite our custom endpoint handlers
+swagger_server/endpoints.py

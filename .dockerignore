@@ -70,3 +70,8 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+# Cloud9 IDE
+.c9/
+
+.swagger-codegen/

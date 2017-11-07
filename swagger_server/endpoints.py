@@ -6,24 +6,30 @@ from cis_interface import runner
 # This file holds the server implementation called 
 # into by the generated Swagger REST API
 #
-def GET_simulation_handler(body):
+
+# Handler for GET /simulations
+def GET_simulations_handler(body):
     return 'a-yup'
-def POST_simulation_handler(body):
-    examples_dir='/usr/local/lib/python3.6/site-packages/cis_interface/examples/hello'
+
+# Handler for POST /simulations
+def POST_simulations_handler(body):
+    examples_dir='/usr/local/lib/python3.6/site-packages/cis_interface/examples'
     models_dir='./Models_AMQP'
 
     # List of paths to yaml files specifying the models that should be run
     # TODO: Pull this from POST body instead?
     # FIXME: temporary hack
-    models = [str(''.join(body.models))]
+    models = body.models
     yaml_paths = []
     
     print(models)
 
-    for path in models:
+    for model in models:
+        name = model.name
+        path = model.path
+
         # Temporary handling for running the examples
-        if path.startswith('example:'):
-            path = path.replace('example:', '', 1)
+        if name.startswith('example:'):
             path = examples_dir + '/' + path + '.yml'
         else:
             path = models_dir + '/' + path + '.yml'
