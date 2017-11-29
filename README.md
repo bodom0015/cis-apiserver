@@ -66,7 +66,7 @@ modified as the codegen process executes.
 
 ## Testing
 
-You can test the `/simulations` endpoint by sending an HTTP POST to `localhost:8080/v2/simulations`:
+You can test the `/simulations` endpoint by sending an HTTP POST to `localhost:8080/api/v1/simulations`:
 ```bash
 curl -XPOST --header 'Content-Type: application/json' localhost:8080/api/v1/simulations -d '{"models":[{"name":"example:hello_c", "path":"hello/hello_c"}]}'
 ```
