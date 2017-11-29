@@ -68,10 +68,19 @@ modified as the codegen process executes.
 
 You can test the `/simulations` endpoint by sending an HTTP POST to `localhost:8080/v2/simulations`:
 ```bash
-curl -XPOST --header 'Content-Type: application/json' localhost:8080/v2/simulations -d '{"models":["example:hello_cpp"]}'
+curl -XPOST --header 'Content-Type: application/json' localhost:8080/api/v1/simulations -d '{"models":[{"name":"example:hello_c", "path":"hello/hello_c"}]}'
 ```
 
 You should see the specified model output in the service logs:
 ```
-
+[{'name': 'example:hello_c', 'path': 'hello/hello_c'}] <--- array of "Model" objects that will be run
+Hello from C
+hello(C): Created I/O channels
+hello(C): Received 14 bytes from file: this is a test
+hello(C): Sent to outq
+hello(C): Received 14 bytes from queue: this is a test
+hello(C): Sent to outf
+Goodbye from C
+172.17.0.1 - - [07/Nov/2017 23:49:40] "POST /api/v1/simulations HTTP/1.1" 200 -
+INFO:werkzeug:172.17.0.1 - - [07/Nov/2017 23:49:40] "POST /api/v1/simulations HTTP/1.1" 200 -
 ```
