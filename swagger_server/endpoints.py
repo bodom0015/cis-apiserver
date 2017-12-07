@@ -1,6 +1,12 @@
 from swagger_server.models.simulation import Simulation
+# import subprocess
 
 from cis_interface import runner
+
+# from kubernetes import client, config
+
+# Configs can be set in Configuration class directly or using helper utility
+# config.load_incluster_config()
 
 #
 # This file holds the server implementation called 
@@ -40,5 +46,15 @@ def POST_simulations_handler(body):
 
     # Run "cisrun" with the given models
     runner.get_runner(yaml_paths).run()
+    
+    # Experiment: Kubernetes Python Client
+    #v1 = client.CoreV1Api()
+    #print("Listing pods with their IPs:")
+    #ret = v1.list_pod_for_all_namespaces(watch=False)
+    #for i in ret.items:
+    #    print("%s\t%s\t%s" % (i.status.pod_ip, i.metadata.namespace, i.metadata.name))
+    
+    # Experiment: Raw Docker
+    # subprocess.check_output(['docker', 'run', '-it', '--rm', '-e', 'RABBIT_NAMESPACE=apiserver', '-e', 'RABBIT_HOST=10.0.0.214', '-e', 'YAML_FILES=' + str(yaml_paths), 'bodom0015/cis_interface'])
 
     return 'did some magic!'
