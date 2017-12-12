@@ -1,4 +1,6 @@
 from swagger_server.models.simulation import Simulation
+from contextlib import redirect_stdout
+import io
 # import subprocess
 
 from cis_interface import runner
@@ -41,11 +43,16 @@ def POST_simulations_handler(body):
             path = models_dir + '/' + path + '.yml'
         yaml_paths.append(path)
         
+    f = io.StringIO()
+    with redirect_stdout(f):
+        runner.get_runner(yaml_paths).run()
+    return f.getvalue()
+        
     # TODO: Set model parameters somehow
     # FIXME: Writing parameters to files on disk doesn't allow for 2+ users
 
     # Run "cisrun" with the given models
-    runner.get_runner(yaml_paths).run()
+    
     
     # Experiment: Kubernetes Python Client
     #v1 = client.CoreV1Api()
@@ -57,4 +64,4 @@ def POST_simulations_handler(body):
     # Experiment: Raw Docker
     # subprocess.check_output(['docker', 'run', '-it', '--rm', '-e', 'RABBIT_NAMESPACE=apiserver', '-e', 'RABBIT_HOST=10.0.0.214', '-e', 'YAML_FILES=' + str(yaml_paths), 'bodom0015/cis_interface'])
 
-    return 'did some magic!'
+    #return 'did some magic!'
