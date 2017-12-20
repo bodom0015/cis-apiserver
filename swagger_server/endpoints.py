@@ -43,15 +43,18 @@ def POST_simulations_handler(body):
             path = models_dir + '/' + path + '.yml'
         yaml_paths.append(path)
         
+
+    # Run "cisrun" with the given models and capture stdout/stderr
     f = io.StringIO()
-    with redirect_stdout(f):
-        runner.get_runner(yaml_paths).run()
+    try: 
+        with redirect_stdout(f):
+            runner.get_runner(yaml_paths).run()
+    except e:
+        print('error: ' + e)
     return f.getvalue()
         
     # TODO: Set model parameters somehow
     # FIXME: Writing parameters to files on disk doesn't allow for 2+ users
-
-    # Run "cisrun" with the given models
     
     
     # Experiment: Kubernetes Python Client
