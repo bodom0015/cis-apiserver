@@ -6,6 +6,7 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from swagger_server.models.base_model_ import Model
+from swagger_server.models.com import Com  # noqa: F401,E501
 from swagger_server.models.model import Model  # noqa: F401,E501
 from swagger_server import util
 
@@ -16,26 +17,46 @@ class Node(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, name: str=None, model: Model=None):  # noqa: E501
+    def __init__(self, id: int=None, model: Model=None, name: str=None, description: str=None, inputs: List[Com]=None, outputs: List[Com]=None):  # noqa: E501
         """Node - a model defined in Swagger
 
-        :param name: The name of this Node.  # noqa: E501
-        :type name: str
+        :param id: The id of this Node.  # noqa: E501
+        :type id: int
         :param model: The model of this Node.  # noqa: E501
         :type model: Model
+        :param name: The name of this Node.  # noqa: E501
+        :type name: str
+        :param description: The description of this Node.  # noqa: E501
+        :type description: str
+        :param inputs: The inputs of this Node.  # noqa: E501
+        :type inputs: List[Com]
+        :param outputs: The outputs of this Node.  # noqa: E501
+        :type outputs: List[Com]
         """
         self.swagger_types = {
+            'id': int,
+            'model': Model,
             'name': str,
-            'model': Model
+            'description': str,
+            'inputs': List[Com],
+            'outputs': List[Com]
         }
 
         self.attribute_map = {
+            'id': 'id',
+            'model': 'model',
             'name': 'name',
-            'model': 'model'
+            'description': 'description',
+            'inputs': 'inputs',
+            'outputs': 'outputs'
         }
 
-        self._name = name
+        self._id = id
         self._model = model
+        self._name = name
+        self._description = description
+        self._inputs = inputs
+        self._outputs = outputs
 
     @classmethod
     def from_dict(cls, dikt) -> 'Node':
@@ -49,25 +70,27 @@ class Node(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def name(self) -> str:
-        """Gets the name of this Node.
+    def id(self) -> int:
+        """Gets the id of this Node.
 
+        The primary key for this node  # noqa: E501
 
-        :return: The name of this Node.
-        :rtype: str
+        :return: The id of this Node.
+        :rtype: int
         """
-        return self._name
+        return self._id
 
-    @name.setter
-    def name(self, name: str):
-        """Sets the name of this Node.
+    @id.setter
+    def id(self, id: int):
+        """Sets the id of this Node.
 
+        The primary key for this node  # noqa: E501
 
-        :param name: The name of this Node.
-        :type name: str
+        :param id: The id of this Node.
+        :type id: int
         """
 
-        self._name = name
+        self._id = id
 
     @property
     def model(self) -> Model:
@@ -87,5 +110,105 @@ class Node(Model):
         :param model: The model of this Node.
         :type model: Model
         """
+        if model is None:
+            raise ValueError("Invalid value for `model`, must not be `None`")  # noqa: E501
 
         self._model = model
+
+    @property
+    def name(self) -> str:
+        """Gets the name of this Node.
+
+        A label for this node  # noqa: E501
+
+        :return: The name of this Node.
+        :rtype: str
+        """
+        return self._name
+
+    @name.setter
+    def name(self, name: str):
+        """Sets the name of this Node.
+
+        A label for this node  # noqa: E501
+
+        :param name: The name of this Node.
+        :type name: str
+        """
+        if name is None:
+            raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
+
+        self._name = name
+
+    @property
+    def description(self) -> str:
+        """Gets the description of this Node.
+
+        A longer description for this node  # noqa: E501
+
+        :return: The description of this Node.
+        :rtype: str
+        """
+        return self._description
+
+    @description.setter
+    def description(self, description: str):
+        """Sets the description of this Node.
+
+        A longer description for this node  # noqa: E501
+
+        :param description: The description of this Node.
+        :type description: str
+        """
+
+        self._description = description
+
+    @property
+    def inputs(self) -> List[Com]:
+        """Gets the inputs of this Node.
+
+        Input Coms associated with this Node  # noqa: E501
+
+        :return: The inputs of this Node.
+        :rtype: List[Com]
+        """
+        return self._inputs
+
+    @inputs.setter
+    def inputs(self, inputs: List[Com]):
+        """Sets the inputs of this Node.
+
+        Input Coms associated with this Node  # noqa: E501
+
+        :param inputs: The inputs of this Node.
+        :type inputs: List[Com]
+        """
+        if inputs is None:
+            raise ValueError("Invalid value for `inputs`, must not be `None`")  # noqa: E501
+
+        self._inputs = inputs
+
+    @property
+    def outputs(self) -> List[Com]:
+        """Gets the outputs of this Node.
+
+        Output Coms associated with this Node  # noqa: E501
+
+        :return: The outputs of this Node.
+        :rtype: List[Com]
+        """
+        return self._outputs
+
+    @outputs.setter
+    def outputs(self, outputs: List[Com]):
+        """Sets the outputs of this Node.
+
+        Output Coms associated with this Node  # noqa: E501
+
+        :param outputs: The outputs of this Node.
+        :type outputs: List[Com]
+        """
+        if outputs is None:
+            raise ValueError("Invalid value for `outputs`, must not be `None`")  # noqa: E501
+
+        self._outputs = outputs

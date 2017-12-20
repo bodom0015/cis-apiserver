@@ -7,6 +7,11 @@ is an example of building a swagger-enabled Flask server.
 
 This example uses the [Connexion](https://github.com/zalando/connexion) library on top of Flask.
 
+## Web Editor
+If you just want to view / edit the API spec, you can skip running anything and go to the hosted version of [Swagger Editor](https://editor.swagger.io/)
+
+Just copy and paste the contents from this repository's [Swagger Spec](swagger_server/swagger/swagger.yaml).
+
 ## Requirements
 Python 3.5.2+
 
