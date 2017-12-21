@@ -6,7 +6,7 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from swagger_server.models.base_model_ import Model
-from swagger_server.models.model import Model  # noqa: F401,E501
+from swagger_server.models.legacy_model import LegacyModel  # noqa: F401,E501
 from swagger_server import util
 
 
@@ -16,16 +16,16 @@ class Simulation(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, models: List[Model]=None, namespace: str=None):  # noqa: E501
+    def __init__(self, models: List[LegacyModel]=None, namespace: str=None):  # noqa: E501
         """Simulation - a model defined in Swagger
 
         :param models: The models of this Simulation.  # noqa: E501
-        :type models: List[Model]
+        :type models: List[LegacyModel]
         :param namespace: The namespace of this Simulation.  # noqa: E501
         :type namespace: str
         """
         self.swagger_types = {
-            'models': List[Model],
+            'models': List[LegacyModel],
             'namespace': str
         }
 
@@ -49,22 +49,22 @@ class Simulation(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def models(self) -> List[Model]:
+    def models(self) -> List[LegacyModel]:
         """Gets the models of this Simulation.
 
 
         :return: The models of this Simulation.
-        :rtype: List[Model]
+        :rtype: List[LegacyModel]
         """
         return self._models
 
     @models.setter
-    def models(self, models: List[Model]):
+    def models(self, models: List[LegacyModel]):
         """Sets the models of this Simulation.
 
 
         :param models: The models of this Simulation.
-        :type models: List[Model]
+        :type models: List[LegacyModel]
         """
 
         self._models = models

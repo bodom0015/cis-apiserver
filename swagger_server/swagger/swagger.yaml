@@ -69,6 +69,33 @@ paths:
         500:
           description: "Server error"
       x-swagger-router-controller: "swagger_server.controllers.graphs_controller"
+  /simulations:
+    post:
+      tags:
+      - "simulations"
+      summary: "Create a new simulation"
+      description: ""
+      operationId: "post_simulations"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "A new set of simulation models to run"
+        required: true
+        schema:
+          $ref: "#/definitions/Simulation"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "Invalid input"
+        500:
+          description: "Server error"
+      deprecated: true
+      x-swagger-router-controller: "swagger_server.controllers.simulations_controller"
 definitions:
   Model:
     type: "object"
@@ -366,6 +393,34 @@ definitions:
     - "MatFile"
     - "RMQ"
     - "ZMQ"
+  Simulation:
+    type: "object"
+    properties:
+      models:
+        type: "array"
+        items:
+          $ref: "#/definitions/LegacyModel"
+      namespace:
+        type: "string"
+    example:
+      models:
+      - name: "name"
+        path: "path"
+      - name: "name"
+        path: "path"
+      namespace: "namespace"
+  LegacyModel:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "The short name / identifier of this model"
+      path:
+        type: "string"
+        description: "Path to the YAML file on disk representing this model"
+    example:
+      name: "name"
+      path: "path"
 externalDocs:
   description: "Find out more about Crops in Silico"
   url: "http://cropsinsilico.org/about-us/"
