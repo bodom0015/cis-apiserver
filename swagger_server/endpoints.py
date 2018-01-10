@@ -1,7 +1,11 @@
 from swagger_server.models.simulation import Simulation
 from contextlib import redirect_stdout
 import io
+import os
 # import subprocess
+import json
+
+from flask import jsonify
 
 from cis_interface import runner
 
@@ -15,8 +19,16 @@ from cis_interface import runner
 # into by the generated Swagger REST API
 #
 
+# Handler for GET /models
+def GET_models_handler():
+    basepath = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    datapath = os.path.join(basepath, 'data')
+    f = open(os.path.join(datapath, 'models.json'), encoding='utf-8');
+    data = json.load(f)
+    return jsonify(data)
+
 # Handler for GET /simulations
-def GET_simulations_handler(body):
+def GET_simulations_handler():
     return 'a-yup'
 
 # Handler for POST /simulations
