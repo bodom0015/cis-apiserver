@@ -4,10 +4,14 @@ import io
 import os
 # import subprocess
 import json
+import yaml
 
 from flask import jsonify
 
 from cis_interface import runner
+
+def newYamlObj(name, driver, args):
+    return {'name':name, 'driver':driver,'args':args}
 
 # from kubernetes import client, config
 
@@ -30,6 +34,40 @@ def GET_models_handler():
 # Handler for GET /simulations
 def GET_simulations_handler():
     return 'a-yup'
+    
+def POST_graphs_handler(body):
+    # Accepts Graph model as "body"
+    # Graph contains "nodes" and "edges"
+    
+    nodes = body.nodes
+    edges = body.edges
+    
+    
+    # TODO: Loop over each node and build a model YAML skeleton
+    # For each node: newYamlObj(node.name, node.model.driver, node.args)
+    modelA = newYamlObj('c_modelA', 'GCCModelDriver', './src/gs_lesson4_modelA.c')
+    modelB = newYamlObj('c_modelB', 'GCCModelDriver', './src/gs_lesson4_modelB.c')
+    
+    # TODO: Loop over each edge
+    # TODO: if only one end connected, args === source/destination (e.g. file name, queuename, )
+    
+    # For each edge with 'from' === null: this is an input of the graph
+    modelA['inputs'] = [newYamlObj('inputA', 'FileInputDriver', './Input/input.txt')]
+    
+    # For each edge with 'to' === null: this is an output of the graph
+    modelB['outputs'] = [newYamlObj('outputB', 'FileOutputDriver', './output.txt')]
+    
+    # TODO: if both ends connected, args === queue name e.g. A_to_B
+    # For each edge with both 'from' and 'to' defined: this is a model-to-model connection
+    rmq_queue_name = 'A_to_B'
+    modelA['outputs'] = [newYamlObj('outputA', 'RMQOutputDriver', rmq_queue_name)]
+    modelB['inputs'] = [newYamlObj('inputB', 'RMQInputDriver', rmq_queue_name)]
+    
+    json_graph = { 'models':[ modelA, modelB ]}
+    
+    return yaml.dump(json_graph, default_flow_style=False)
+    
+    #return 'asap'
 
 # Handler for POST /simulations
 def POST_simulations_handler(body):
