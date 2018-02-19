@@ -42,6 +42,7 @@ requirements.txt
 # Skip our simulations controller (for now)
 swagger_server/controllers/simulations_controller.py
 swagger_server/controllers/graphs_controller.py
+swagger_server/controllers/models_controller.py
 
 # NEVER modify our Docker image
 Dockerfile

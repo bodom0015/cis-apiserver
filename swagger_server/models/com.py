@@ -15,26 +15,31 @@ class Com(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, name: str=None, model_id: str=None):  # noqa: E501
+    def __init__(self, name: str=None, model_id: str=None, node_id: str=None):  # noqa: E501
         """Com - a model defined in Swagger
 
         :param name: The name of this Com.  # noqa: E501
         :type name: str
         :param model_id: The model_id of this Com.  # noqa: E501
         :type model_id: str
+        :param node_id: The node_id of this Com.  # noqa: E501
+        :type node_id: str
         """
         self.swagger_types = {
             'name': str,
-            'model_id': str
+            'model_id': str,
+            'node_id': str
         }
 
         self.attribute_map = {
             'name': 'name',
-            'model_id': 'model_id'
+            'model_id': 'model_id',
+            'node_id': 'node_id'
         }
 
         self._name = name
         self._model_id = model_id
+        self._node_id = node_id
 
     @classmethod
     def from_dict(cls, dikt) -> 'Com':
@@ -96,3 +101,26 @@ class Com(Model):
             raise ValueError("Invalid value for `model_id`, must not be `None`")  # noqa: E501
 
         self._model_id = model_id
+
+    @property
+    def node_id(self) -> str:
+        """Gets the node_id of this Com.
+
+        The id of the node instance that the Com is part of  # noqa: E501
+
+        :return: The node_id of this Com.
+        :rtype: str
+        """
+        return self._node_id
+
+    @node_id.setter
+    def node_id(self, node_id: str):
+        """Sets the node_id of this Com.
+
+        The id of the node instance that the Com is part of  # noqa: E501
+
+        :param node_id: The node_id of this Com.
+        :type node_id: str
+        """
+
+        self._node_id = node_id

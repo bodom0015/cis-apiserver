@@ -17,7 +17,7 @@ class Edge(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id: int=None, name: str=None, args: str=None, type: EdgeType=None, _from: Com=None, to: Com=None, operation: str=None):  # noqa: E501
+    def __init__(self, id: int=None, name: str=None, args: str=None, type: EdgeType=None, destination: Com=None, source: Com=None, operation: str=None):  # noqa: E501
         """Edge - a model defined in Swagger
 
         :param id: The id of this Edge.  # noqa: E501
@@ -28,10 +28,10 @@ class Edge(Model):
         :type args: str
         :param type: The type of this Edge.  # noqa: E501
         :type type: EdgeType
-        :param _from: The _from of this Edge.  # noqa: E501
-        :type _from: Com
-        :param to: The to of this Edge.  # noqa: E501
-        :type to: Com
+        :param destination: The destination of this Edge.  # noqa: E501
+        :type destination: Com
+        :param source: The source of this Edge.  # noqa: E501
+        :type source: Com
         :param operation: The operation of this Edge.  # noqa: E501
         :type operation: str
         """
@@ -40,8 +40,8 @@ class Edge(Model):
             'name': str,
             'args': str,
             'type': EdgeType,
-            '_from': Com,
-            'to': Com,
+            'destination': Com,
+            'source': Com,
             'operation': str
         }
 
@@ -50,8 +50,8 @@ class Edge(Model):
             'name': 'name',
             'args': 'args',
             'type': 'type',
-            '_from': 'from',
-            'to': 'to',
+            'destination': 'destination',
+            'source': 'source',
             'operation': 'operation'
         }
 
@@ -59,8 +59,8 @@ class Edge(Model):
         self._name = name
         self._args = args
         self._type = type
-        self.__from = _from
-        self._to = to
+        self._destination = destination
+        self._source = source
         self._operation = operation
 
     @classmethod
@@ -171,46 +171,50 @@ class Edge(Model):
         self._type = type
 
     @property
-    def _from(self) -> Com:
-        """Gets the _from of this Edge.
+    def destination(self) -> Com:
+        """Gets the destination of this Edge.
 
 
-        :return: The _from of this Edge.
+        :return: The destination of this Edge.
         :rtype: Com
         """
-        return self.__from
+        return self._destination
 
-    @_from.setter
-    def _from(self, _from: Com):
-        """Sets the _from of this Edge.
+    @destination.setter
+    def destination(self, destination: Com):
+        """Sets the destination of this Edge.
 
 
-        :param _from: The _from of this Edge.
-        :type _from: Com
+        :param destination: The destination of this Edge.
+        :type destination: Com
         """
+        if destination is None:
+            raise ValueError("Invalid value for `destination`, must not be `None`")  # noqa: E501
 
-        self.__from = _from
+        self._destination = destination
 
     @property
-    def to(self) -> Com:
-        """Gets the to of this Edge.
+    def source(self) -> Com:
+        """Gets the source of this Edge.
 
 
-        :return: The to of this Edge.
+        :return: The source of this Edge.
         :rtype: Com
         """
-        return self._to
+        return self._source
 
-    @to.setter
-    def to(self, to: Com):
-        """Sets the to of this Edge.
+    @source.setter
+    def source(self, source: Com):
+        """Sets the source of this Edge.
 
 
-        :param to: The to of this Edge.
-        :type to: Com
+        :param source: The source of this Edge.
+        :type source: Com
         """
+        if source is None:
+            raise ValueError("Invalid value for `source`, must not be `None`")  # noqa: E501
 
-        self._to = to
+        self._source = source
 
     @property
     def operation(self) -> str:
