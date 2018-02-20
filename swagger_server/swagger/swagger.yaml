@@ -22,7 +22,6 @@ tags:
 - name: "graphs"
   description: "Submit client data (dynamic)"
 schemes:
-- "http"
 - "https"
 paths:
   /models:
