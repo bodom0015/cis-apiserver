@@ -68,7 +68,6 @@ target/
 
 # Don't commit actual models to this repository
 Models_AMQP/
-swagger_server/data/*
 
 # Local cisrun config
 .cis_interface.cfg

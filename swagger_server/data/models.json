@@ -1,0 +1,107 @@
+{
+    "inport": {
+        "name": "inport",
+        "label": "InPort",
+        "description": "Graph Input",
+        "icon": "sign-in",
+        "driver": "GCCModelDriver",
+        "args": "unused",
+        "inports": [],
+        "outports": [
+            {"name": "value", "type": "all"}
+        ]
+    },
+    "outport": {
+        "name": "outport",
+        "label": "OutPort",
+        "description": "Graph Output",
+        "icon": "sign-out",
+        "driver": "GCCModelDriver",
+        "args": "unused",
+        "inports": [
+            {"name": "value", "type": "all"}
+        ],
+        "outports": []
+    },
+    "grcm": {
+        "name": "grcm",
+        "label": "GrCM",
+        "description": "Gene Expression Model",
+        "icon": "intersex",
+        "driver": "ModelDriver",
+        "args": [
+            "python",
+            "../GrCM/src/GrCM_plain.py"
+        ],
+        "inports": [
+            {"name": "grcm_input1", "label": "GrCM_input1", "type": "all"},
+            {"name": "grcm_static", "label": "GrCM_static", "type": "all"}
+        ],
+        "outports": [
+            {"name": "grcm_output", "label": "GrCM_output", "type": "all"}
+        ]
+    },
+    "mem": {
+        "name": "mem",
+        "label": "MeM",
+        "description": "Metabolic Model",
+        "icon": "cutlery",
+        "driver": "MatlabModelDriver",
+        "args": "../MeM/src/MeM_alone.m",
+        "inports": [
+            {"name": "mem_input1", "label": "MeM_input1", "type": "all"},
+            {"name": "mem_input2", "label": "MeM_input2", "type": "all"},
+            {"name": "mem_input3", "label": "MeM_input3", "type": "all"}
+        ],
+        "outports": [
+            {"name": "mem_output", "label": "MeM_output", "type": "all", 
+            "field_names": "PhotosynthesisRate", "field_units": "uMol/s/(m**2)"}
+        ]
+    },
+    "rtr": {
+        "name": "rtr",
+        "label": "RayTracer",
+        "description": "RayTracer Model",
+        "icon": "sun-o",
+        "driver": "CMakeModelDriver",
+        "sourcedir": "../../clever_raytracer_name",
+        "args": [
+            "cis_ray",
+            "-a nofile",
+            "-o output.txt",
+            "-f 12",
+            "-e 12",
+            "-i 1",
+            "-r 0.1",
+            "-l 0.075",
+            "-j 0.075"
+        ],
+        "cmakeargs": "-DCISRUN:BOOL=ON",
+        "inports": [
+            {"name": "rtr_canopy_structure", "label": "rtr_canopy_structure", "type": "all"}
+        ],
+        "outports": [
+            {"name": "rtr_environ", "label": "rtr_environ", "type": "all"}
+        ]
+    },
+    "lem": {
+        "name": "lem",
+        "label": "LeM",
+        "description": "Growth Model",
+        "icon": "leaf",
+        "driver": "MakeModelDriver",
+        "makedir": "./LeM",
+        "makefile": "../LeM/src/LeMMakeFile",
+        "args": "LeM",
+        "inports": [
+            {"name": "lem_input1", "label": "LeM_input1", "type": "all"},
+            {"name": "lem_static", "label": "LeM_static", "type": "all"},
+            {"name": "lem_photo", "label": "LeM_photo", "type": "all"}
+        ],
+        "outports": [
+            {"name": "lem_environ", "label": "LeM_environ", "type": "all", "field_names": "CO2,light,Temp,GRNC,GRNT"},
+            {"name": "lem_output", "label": "LeM_output", "type": "all", "field_names": "LeafID,LeafTemperature,Ca,Ci,ANet,Transpiration,Radiation,SensibleHead,LatentHead,Emission,Me,Gs,PAR"}
+        ]
+    }
+}
+
