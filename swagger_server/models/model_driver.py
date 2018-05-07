@@ -21,6 +21,9 @@ class ModelDriver(Model):
     GCCMODELDRIVER = "GCCModelDriver"
     PYTHONMODELDRIVER = "PythonModelDriver"
     MATLABMODELDRIVER = "MatlabModelDriver"
+    MAKEMODELDRIVER = "MakeModelDriver"
+    CMAKEMODELDRIVER = "CMakeModelDriver"
+    MODELDRIVER = "ModelDriver"
 
     def __init__(self):  # noqa: E501
         """ModelDriver - a model defined in Swagger

@@ -14,6 +14,24 @@ from flask import jsonify
 
 from cis_interface import runner
 
+# from kubernetes import client, config
+
+# Configs can be set in Configuration class directly or using helper utility
+# config.load_incluster_config()
+from io import StringIO
+#from cStringIO import StringIO
+import sys
+
+class Capturing(list):
+    def __enter__(self):
+        self._stdout = sys.stdout
+        sys.stdout = self._stringio = StringIO()
+        return self
+    def __exit__(self, *args):
+        self.extend(self._stringio.getvalue().splitlines())
+        del self._stringio    # free up some memory
+        sys.stdout = self._stdout
+
 def newYamlObj(name, driver, args):
     return { 'name':name, 'driver':driver, 'args':args }
     
@@ -37,10 +55,6 @@ def getCountByNodeId(nodes, id):
         if node.id == id:
             return node
 
-# from kubernetes import client, config
-
-# Configs can be set in Configuration class directly or using helper utility
-# config.load_incluster_config()
 
 #
 # This file holds the server implementation called 
@@ -54,6 +68,20 @@ def GET_models_handler():
     f = open(os.path.join(datapath, 'models.json'), encoding='utf-8');
     data = json.load(f)
     return jsonify(data)
+    
+# Handler for POST /models
+def POST_models_handler(body):
+    # TODO: Run under Kubernetes NGINX ILB 0.9.0+ for oauth
+    # TODO: Scrape oauth token from request headers
+    # TODO: Fork repo using GitHub REST API and oauth token
+    # TODO: Clone new fork locally to disk with git CLI
+    # TODO: Read models.json into a Python object (e.g. return GET /models)
+    # TODO: Insert our new model into the list in memory
+    # TODO: Write modified models list back to models.json
+    # TODO: git checkout -b temporary-generated-branchname
+    # TODO: git add swagger_server/data/models.json
+    # TODO: Using oauth token: git push origin temporary-generated-branchname
+    return 'posted'
 
 # Handler for GET /simulations
 def GET_simulations_handler():
@@ -145,9 +173,11 @@ def POST_simulations_handler(body):
 
         # Temporary handling for running the examples
         if name.startswith('example:'):
-            path = examples_dir + '/' + path + '.yml'
+            path = examples_dir + '/' + path
         else:
-            path = models_dir + '/' + path + '.yml'
+            path = models_dir + '/' + path
+        if not path.endswith('.yml'):
+            path = path + '.yml'
         yaml_paths.append(path)
         
 
@@ -174,4 +204,11 @@ def POST_simulations_handler(body):
     # Experiment: Raw Docker
     # subprocess.check_output(['docker', 'run', '-it', '--rm', '-e', 'RABBIT_NAMESPACE=apiserver', '-e', 'RABBIT_HOST=10.0.0.214', '-e', 'YAML_FILES=' + str(yaml_paths), 'bodom0015/cis_interface'])
 
-    #return 'did some magic!'
+    # Run "cisrun" with the given models
+    with Capturing() as output:
+        try:
+            runner.get_runner(yaml_paths).run()
+        except ValueError as valerr:
+            print('ERROR: ' + valerr)
+
+    return output
