@@ -12,3 +12,4 @@ from swagger_server.models.model import Model
 from swagger_server.models.model_driver import ModelDriver
 from swagger_server.models.node import Node
 from swagger_server.models.simulation import Simulation
+from swagger_server.models.yaml_graph import YamlGraph

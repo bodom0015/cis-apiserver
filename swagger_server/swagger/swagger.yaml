@@ -11,8 +11,8 @@ info:
   license:
     name: "BSD-3"
     url: "https://opensource.org/licenses/BSD-3-Clause"
-host: "proto.cis.ndslabs.org"
-basePath: "/oauth2/api/v1"
+host: "www.cis.ndslabs.org"
+basePath: "/api/v1"
 tags:
 - name: "models"
   description: "Retrieve server data (static)"
@@ -81,10 +81,10 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "A new graph of models to run"
+        description: "A new system of models to run with cis_interface"
         required: true
         schema:
-          $ref: "#/definitions/Graph"
+          $ref: "#/definitions/YamlGraph"
       responses:
         200:
           description: "OK"
@@ -484,6 +484,13 @@ definitions:
     example:
       name: "name"
       path: "path"
+  YamlGraph:
+    type: "object"
+    properties:
+      yaml:
+        type: "string"
+    example:
+      yaml: "yaml"
 externalDocs:
   description: "Find out more about Crops in Silico"
   url: "http://cropsinsilico.org/about-us/"
