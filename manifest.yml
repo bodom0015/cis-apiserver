@@ -1,0 +1,55 @@
+models:
+  - name: GrCM
+    args:
+      - python
+      - ../GrCM/src/GrCM_plain.py
+    driver: ModelDriver
+    inputs:
+      - GrCM_input1
+      - GrCM_static
+    outputs: GrCM_output
+  - name: MeM
+    args: ../MeM/src/MeM_alone.m
+    driver: MatlabModelDriver
+    inputs:
+      - MeM_input1
+      - MeM_input2
+      - MeM_input3
+    outputs: MeM_output
+  - name: RayTracer
+    args:
+      - cis_ray
+      - '-a nofile'
+      - '-o output.txt'
+      - '-f 12'
+      - '-e 12'
+      - '-i 1'
+      - '-r 0.1'
+      - '-l 0.075'
+      - '-j 0.075'
+    driver: CMakeModelDriver
+    inputs: rtr_canopy_structure
+    outputs: rtr_environ
+    cmakeargs: '-DCISRUN:BOOL=ON'
+    sourcedir: ../../clever_raytracer_name
+connections:
+  - input: rtr_environ
+    output: MeM_input3
+  - input: GrCM_output
+    output: MeM_input1
+  - input: ../GrCM/Input/GrCM_input.txt
+    output: GrCM_input1
+    read_meth: pandas
+  - input: ../GrCM/Input/GrCM_static.txt
+    output: GrCM_static
+    read_meth: pandas
+  - input: ./Input/MeM_input2.txt
+    output: MeM_input2
+    read_meth: table_array
+  - input: ../../clever_raytracer_name/Model_test.txt
+    output: rtr_canopy_structure
+    read_meth: table_array
+  - input: MeM_output
+    output: ./Output/MeM_output.txt
+    write_meth: table
+

@@ -1,7 +1,7 @@
 import connexion
 import six
 
-from swagger_server.models.graph import Graph  # noqa: E501
+from swagger_server.models.yaml_graph import YamlGraph  # noqa: E501
 from swagger_server import util
 
 from .. import endpoints
@@ -11,11 +11,11 @@ def post_graphs(body):  # noqa: E501
 
      # noqa: E501
 
-    :param body: A new graph of models to run
+    :param body: A new system of models to run with cis_interface
     :type body: dict | bytes
 
     :rtype: None
     """
     if connexion.request.is_json:
-        body = Graph.from_dict(connexion.request.get_json())  # noqa: E501
-    return endpoints.POST_graphs_handler(body)
+        body = YamlGraph.from_dict(connexion.request.get_json())  # noqa: E501
+    return endpoints.POST_graphs_handler_v2(body)

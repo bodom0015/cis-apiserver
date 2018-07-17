@@ -75,17 +75,75 @@ def POST_models_handler(body):
     # TODO: Scrape oauth token from request headers
     # TODO: Fork repo using GitHub REST API and oauth token
     # TODO: Clone new fork locally to disk with git CLI
+    
+    # FIXME: Use a database to simplify this subroutine
     # TODO: Read models.json into a Python object (e.g. return GET /models)
     # TODO: Insert our new model into the list in memory
     # TODO: Write modified models list back to models.json
+    
     # TODO: git checkout -b temporary-generated-branchname
     # TODO: git add swagger_server/data/models.json
-    # TODO: Using oauth token: git push origin temporary-generated-branchname
+    # TODO: Using oauth token: git push origin temporary-generated-branchname? see https://help.github.com/articles/git-automation-with-oauth-tokens/
+    # TODO: Using oauth token: create PR via GitHub REST API? see https://developer.github.com/v3/pulls/#create-a-pull-request
     return 'posted'
 
 # Handler for GET /simulations
 def GET_simulations_handler():
     return 'a-yup'
+    
+    
+def POST_graphs_handler_v2(body):
+    # List of paths to yaml files specifying the models that should be run
+    # TODO: Pull this from POST body instead?
+    # FIXME: temporary hack
+    yaml = body.yaml
+    base_path = os.path.dirname(os.path.realpath(__file__))
+    tmp_file_path = base_path + '/manifest.yml'
+    
+    # Write the received YAML to file
+    print(yaml)
+    with open(tmp_file_path, "w+") as f:
+        f.write(yaml)
+
+    # Run "cisrun" with the given models and capture stdout/stderr
+    f = io.StringIO()
+    try: 
+        with redirect_stdout(f):
+            runner.get_runner([tmp_file_path]).run()
+    except Exception as e:
+        print('error: ' + str(e))
+        
+    # Cleanup temporary manifest file at the end
+    os.unlink(tmp_file_path)
+    
+    print('it worked!?')
+        
+    # Finally, return the stdout of our subprocess
+    return f.getvalue()
+        
+    # TODO: Set model parameters somehow
+    # FIXME: Writing parameters to files on disk doesn't allow for 2+ users
+    
+    
+    # Experiment: Kubernetes Python Client
+    #v1 = client.CoreV1Api()
+    #print("Listing pods with their IPs:")
+    #ret = v1.list_pod_for_all_namespaces(watch=False)
+    #for i in ret.items:
+    #    print("%s\t%s\t%s" % (i.status.pod_ip, i.metadata.namespace, i.metadata.name))
+    
+    # Experiment: Raw Docker
+    # subprocess.check_output(['docker', 'run', '-it', '--rm', '-e', 'RABBIT_NAMESPACE=apiserver', '-e', 'RABBIT_HOST=10.0.0.214', '-e', 'YAML_FILES=' + str(yaml_paths), 'bodom0015/cis_interface'])
+
+    # Run "cisrun" with the given models
+    with Capturing() as output:
+        try:
+            runner.get_runner(yaml_paths).run()
+        except ValueError as valerr:
+            print('ERROR: ' + valerr)
+
+    return output
+
     
 def POST_graphs_handler(body):
     # Accepts Graph model as "body"
